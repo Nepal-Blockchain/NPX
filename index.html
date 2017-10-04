@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nepal Bitcoin and altcoins price in Nepalese rupees. Ethereum Price ticker in Nepalese Rupees.">
+  <title>&ndash; Nepal Bitcoin &ndash; Altcoins Market Data &ndash;</title>
+  <link rel="stylesheet" href="css/pure-min.css">
+  <link rel="apple-touch-icon" sizes="57x57" href="img/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="img/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="img/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="img/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="img/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="manifest" href="img/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="img/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <style>
+  .dark-primary-color    { background: #FFA000; }
+  .default-primary-color { background: #FFC107; }
+  .light-primary-color   { background: #FFECB3; }
+  .accent-color          { background: #4CAF50; }
+  .primary-text-color    { color: #212121; }
+  .secondary-text-color  { color: #757575; }
+  .divider-color         { border-color: #BDBDBD; }
+  tr:nth-child(even) {
+    background: #CCC;
+  }
+  tr:nth-child(odd) {
+    background: #FFF;
+  }
+</style>
+</head>
+<body class="primary-text-color divider-color">
+
+  <div id="loader" class="loader hidden">
+    <img id="logo_load" src="nepalbitcoin.jpeg" class="rotating center" style="max-height: 200px; max-width: 200px; border-radius: 50%; ">
+    <h5 style="color: #000;" class="center">
+      <span id="loading">Loading forex data from Nepal Rastra Bank</span>
+    </h5>
+
+  </div> 
+
+  <div class="npx-menu-fixed">
+    <div class="npx-menu-wrapper accent-color">
+      <div class="pure-menu npx-menu npx-menu-top">
+        <a href="#" class="pure-menu-heading npx-menu-brand">Nepal Bitcoin</a>
+        <a href="#" class="npx-menu-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
+      </div>
+      <div class="pure-menu pure-menu-horizontal pure-menu-scrollable npx-menu npx-menu-bottom npx-menu-tucked" id="tuckedMenu">
+        <div class="npx-menu-screen"></div>
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a href="https://github.com/nepal-blockchain" target="_blank" class="pure-menu-link">Nepal Blockchain R&D</a></li>
+          <li class="pure-menu-item">
+            <a href="#" class="pure-menu-link">WTFAQ</a>
+          </li>
+          <li class="pure-menu-item">
+            <a href="#" class="pure-menu-link">Bitcoin In Nepal</a>
+          </li>
+          <li class="pure-menu-item">
+            <a target="_blank" href="https://blockgeeks.com/guides/what-is-blockchain-technology/
+            " class="pure-menu-link">What is Blockchain?</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="pure-g main">
+    <div class="pure-u-1-2">
+      <img src="" class="pure-img logo center" id="logo">
+      <h1 style="text-align: center;">Nepal Bitcoin &amp; Altcoins Price</h1>
+      <div class="pure-g" style="text-align: center;">
+        <div class="pure-u-1-2">
+          <span id="total_market_cap"></span>
+        </div>
+        <div class="pure-u-1-2">
+          <span id="total_24h_volume"></span>
+        </div>
+        <div class="pure-u-1-2">
+          <span id="active_assets"> </span>
+        </div>
+        <div class="pure-u-1-2">
+          <span id="active_markets"></span>
+        </div>
+        <div class="pure-u-1-2">
+          <span id="bitcoin_dom"> </span>
+        </div>
+        <div class="pure-u-1-2">
+          <span id="active_currencies"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pure-u-1-2">
+      <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/l1si5ZWLgy0" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="pure-u-1">
+      <div id="table-wrap">
+        <input type="text" class="fuzzy-search" placeholder="Search Coin/Asset" />
+        <table>
+          <thead>
+            <tr>
+              <th data-sort-default data-sort="RANK" onclick="sortBy=RANK;">Rank</th>
+              <th data-sort="NAME">Coin/Asset</th>
+              <th data-sort="NPR" onclick="sortBy=NPR;">NPR</th>
+              <th data-sort="USD" onclick="sortBy=USD;">USD</th>
+              <th data-sort="BTC" onclick="sortBy=BTC;">BTC</th>
+              <th data-sort="VOL" onclick="sortBy='VOL';">Volume(24h)</th>
+              <th data-sort="CAP" onclick="sortBy='CAP';">Market Cap</th>
+              <th data-sort="SUPPLY" onclick="sortBy='SUPPLY';">Current Supply</th>
+              <th data-sort="H1" onclick="sortBy=H1;">1h</th>
+              <th data-sort="H24" onclick="sortBy=H24;">24h</th>
+              <th data-sort="D7" onclick="sortBy=D7;">7d</th>
+              <th data-sort="NPR1" onclick="sortBy=NPR1;">1NPR</th>
+            </tr>
+          </thead>
+          <tbody class="list" id="cryptoList">
+            <tr id="DBX">
+              <td class="RANK center" colspan="12">Loading crypto market data from coinmarketcap.com</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="pagination"></ul>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function (window, document) {
+      document.getElementById('toggle').addEventListener('click', function (e) {
+        document.getElementById('tuckedMenu').classList.toggle('npx-menu-tucked');
+        document.getElementById('toggle').classList.toggle('x');
+      });
+    })(this, this.document);
+  </script>
+  <script type="text/javascript" src="js/list.js"></script>
+  <script type="text/javascript" src="js/tools.js"></script>
+  <script type="text/javascript" src="js/npx.js"></script>
+</body>
+</html>

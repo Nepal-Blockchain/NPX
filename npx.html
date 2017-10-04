@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Nepal Bitcoin</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/cryptoicons.css">
+
+  <link rel="preload" href="nepalbitcoin.jpeg" as="image" media="(max-width: 200px)">
+</head>
+<body>
+	<div id="loader" class="" style="z-index: 42;min-height: 100%;min-width: 100%;background-color: rgba(255, 255, 255, 0.80);position: fixed;top: 0px;left: 0px; padding-top: 10em; text-align: center;">
+		<div style="display: block;
+		margin: auto;">
+		<img id="logo_load" src="nepalbitcoin.jpeg" class="rotating" style="max-height: 200px; max-width: 200px; border-radius: 50%; ">
+		<h5 style="color: #fff;">
+			<span id="loading">Loading forex data from Nepal Rastra Bank</span>
+		</h5>
+
+	</div> 
+</div>	
+<img id="logo" style="border-radius: 50%; max-width: 200px; max-height: 200px;">
+<h1>Nepal Bitcoin And Altcoins Price</h1>
+<div class="">
+	<table class="" id="cryptoTable">
+		<thead>
+			<tr>
+				<th>Rank</th>
+				<th>Coin/Asset</th>
+				<th>NPR</th>
+				<th>USD</th>
+				<th>BTC</th>
+				<th>Volume(24h)</th>
+				<th>Market Cap</th>
+				<th>Current Supply</th>
+				<th>1h</th>
+				<th>24h</th>
+				<th>7d</th>
+				<th>NPR 1</th>
+			</tr>
+		</thead>
+		<tr>
+			<td>N/A</td>
+			<td>Danphe BaaS</td>
+			<td>0.02</td>
+			<td>0.02</td>
+			<td>0.02</td>
+			<td>N/A</td>
+			<td>46007.32</td>
+			<td>2300366</td>
+			<td>N/A</td>
+			<td>N/A</td>
+			<td>N/A</td>
+			<td>50</td>
+		</tr>
+
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<div class="">
+
+	<h1> Hello</h1>
+</div>
+
+<script type="text/javascript" src="js/dataTables.js"></script>
+
+<script type="text/javascript" src="js/tools.js"></script>
+<script type="text/javascript">
+
+	/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
+
+	"use strict";
+	let NepalBitcoin = {
+		//
+		USDNPR:0,
+		Discord: '<a href="https://discord.gg/erQQCuM" target="_blank">Nepal Blockchain R&D @ Discord</a>',
+		CryptoAPI: "//api.coinmarketcap.com/v1/",
+		loading: document.getElementById("loading"),
+		NRBForex: "//runkit.io/nepalbitcoin/nrb-forex-json/0.0.2",
+		dataTable : new DataTable("#cryptoTable",{
+			fixedHeight:true,
+			perPage:13,
+			layout: {
+				top: "{info}{search}",
+				bottom: "{pager}"
+			},
+			labels: {
+				placeholder: "Search..",
+				perPage: "Showing {select} Coins per page",
+				noRows: "No Coins found",
+				info: "Showing {start} to {end} of {rows} Coins/Assets."
+			},
+			columns: [{select:0, sortable: false
+			}]
+		}),
+		DATA:{
+			coins:{},
+			map:{},
+			front:{},
+
+		},
+		init: function(){
+			this.CoinMarketCap("ticker");
+		},
+		getNRBForex:function(){
+			let opts = { 
+				method: 'GET',
+				headers: new Headers(),
+				mode: 'cors',
+				cache: 'force-cache'
+			};
+
+			fetch(this.NRBForex, opts)
+			.then((NRB) => {
+				return this.fetchStatus(NRB);
+			}).then((forex) => {
+				let USD = forex.result.Conversion.Currency[1];
+				this.USDNPR = ((parseFloat(USD.TargetBuy) + parseFloat(USD.TargetSell)) / 2).toFixed(4);
+				console.log(this.USDNPR);
+				this.coincap("front");
+			})
+			.catch((err) => {
+				console.log(err);
+				loading.innerHTML = "<h3>Error while loading market data..<p>Please check your internet connection & refresh this page. <br> Contact " + this.Discord + " for feature request &or bug report.</p></h3>";
+			});
+		},
+		CoinMarketCap:function(_api){
+			loading.innerHTML = "<h3>Loading crypto market data from <a href='https://coinmarketcap.com' target='_blank'>coinmarketcap.com</a></h3>";
+			fetch(this.CryptoAPI+_api+"/?convert=INR")
+			.then((response) => {
+				return this.fetchStatus(response);
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+			.then((data) => {
+				loading.innerHTML = "";
+				switch(_api){
+					case "global" :{
+						this.DATA.global = data;
+					}
+					break;
+					case "ticker":{
+						this.frontPage(data);
+					}
+					break;
+					default:{
+						console.log(data);
+					}		
+					break;
+				}
+
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		},
+		frontPage: function(data){
+			let _data=[];
+			let table = this.dataTable.rows();
+			let c = 0;
+			data.forEach((coin) => {
+				for (var [key, value] of Object.entries(coin)) {
+					if(value === null){
+						return;
+					}
+				}
+				let price = parseFloat(coin.price_inr) * 1.6;
+				let vol = parseFloat(coin["24h_volume_inr"]) * 1.6;
+				let cap = parseFloat(coin.market_cap_inr) * 1.6;
+				let rs1 = 1 / price;
+				
+				_data[c] = [
+				coin.rank,
+				coin.name,
+				this.neNumber(price.toFixed(price < 1 ? 8 : 3))[1],
+				this.neNumber(coin.price_usd)[1],
+				this.neNumber(coin.price_btc)[1],
+				this.neNumber(vol.toFixed(0))[1],
+				this.neNumber(cap.toFixed(0))[1],
+				parseFloat(coin.total_supply).toFixed(0) +" "+ coin.symbol,
+				coin.percent_change_1h +"%",
+				coin.percent_change_24h +"%",
+				coin.percent_change_7d +"%",
+				(rs1).toFixed(rs1 < 1 ? 8 : 3)
+				];
+				c++;
+			});
+			console.log(_data);
+			this.dataTable.destroy();
+			this.dataTable.render();
+			table.remove();
+			table.add(_data);
+			this.dataTable.columns().sort(6,"asc");
+			let loader = document.getElementById("loader");
+			let loaderLogo = document.getElementById("logo_load");
+				loader.style.backgroundColor = "rgba(0, 0, 0, 0)";
+			loaderLogo.classList.remove("rotating");
+			loaderLogo.classList.add("logo-animation");
+			setTimeout(function(){ 
+				document.getElementById("logo").src = "nepalbitcoin.jpeg";
+				loader.style.display = "none";
+			},300);
+
+		},
+		fetchStatus : function(res){
+			console.log(res);
+			if (res.status >= 200 && res.status < 300) {
+				return res.json();
+			} else {
+				let error = new Error(res.statusText);
+				error.res = res;
+				throw error;
+			}
+		},
+		test1:function(_num){
+			let ne = this.neNumber(_num);
+			return '<span title="'+ne[2]+'">'+ ne[1]+ '</span>';
+		},
+		dataKeyPair: function(data){
+			let obj = {
+				headings: Object.keys(data[0]),
+				rows: []
+			};
+			for (let i = 0; i < data.length; i++) {
+				obj.rows[i] = [];
+				for (let p in data[i]) {
+					if(data[i].hasOwnProperty(p)) {
+						obj.rows[i].push(data[i][p]);
+					}
+				}
+			}
+			console.log(obj.rows);
+			return obj;
+		},
+		neNumber : new NeNum().convert,
+
+	};
+	NepalBitcoin.init();
+</script>
+
+</body>
+</html>
