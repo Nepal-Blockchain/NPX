@@ -48,7 +48,7 @@ var NPX = {
 	},
 	CoinMarketCap:function(_api){
 		this.loading.innerHTML = "<h3>Loading crypto market data from <a href='https://coinmarketcap.com' target='_blank'>coinmarketcap.com</a></h3>";
-		fetch(this.CryptoAPI+_api+"/?convert=INR", this.fetchOpts)
+		fetch(this.CryptoAPI+_api+"/?convert=INR&limit=101", this.fetchOpts)
 		.then((response) => {
 			return this.fetchStatus(response);
 		})
